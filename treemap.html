@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Treemap Test</title>
+
+  <script src="treemap.js" language="JavaScript"></script>
+
+  <script language="javascript">
+
+    function init() {
+      
+      var tm = new Treemap;
+      var branch = new Branch;
+
+      var d = document.getElementById("debug");
+
+      // Test data
+      branch.value = 100;
+      branch.color = '#009933';
+      branch.label = 'Fire Department';
+
+      branch.x = 56;
+      branch.y = 30;
+    
+      d.innerHTML += branch.label + " " + branch.value + "<br>\n";
+
+    } 
+
+  </script>
+
+</head>
+
+<body onload="javascript:init();">
+
+  <h1>Treemap Test</h1>
+  <div id="debug">Debug data<br></div>
+</body>
+
+</html>
+
