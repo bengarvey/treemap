@@ -4,13 +4,13 @@
 // Twitter:  @bengarvey
 // ben@bengarvey.com
 //
-// Hosted at https://github.com/bengarvey/evidensity.js/
-// License:  https://github.com/bengarvey/evidensity.js/blob/master/mit-license.txt
+// Hosted at https://github.com/bengarvey/treemap
+// License:  https://github.com/bengarvey/mit-license.txt
 
 
   // Treemap class
   function Treemap () {
-  
+      
       
 
   }

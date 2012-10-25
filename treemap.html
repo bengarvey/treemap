@@ -11,22 +11,57 @@
     function init() {
       
       var tm = new Treemap;
-      var branch = new Branch;
+
+      // Branch array
+      var branches = new Array();
 
       var d = document.getElementById("debug");
 
-      // Test data
-      branch.value = 100;
-      branch.color = '#009933';
-      branch.label = 'Fire Department';
+      // Test data arrays
+      var values = new Array(100,2000,300,400,350,75,200,300);
+   
+      // Generate random and labels for each test data entry
+      var colors  = new Array();
+      var labels  = new Array();
 
-      branch.x = 56;
-      branch.y = 30;
-    
-      d.innerHTML += branch.label + " " + branch.value + "<br>\n";
+      for(var v in values) {
+        colors.push(randomColor());
+        labels[v] = "name" + v;
 
+        branches[v]       = new Branch;
+        branches[v].color = colors[v];
+        branches[v].label = labels[v];
+        branches[v].value = values[v];
+      }
+  
+      for(var b in branches) {    
+        d.innerHTML += branches[b].label + " " + branches[b].value + " " + branches[b].color + "<br>\n";
+      }
+  
     } 
 
+	  // randomColor	Returns a random hex color
+	  //
+	  // Parameters
+	  // none
+	  function randomColor() {
+
+		  // initialize some variables
+		  var color 	= "#";
+		  var c 		= "";
+		  var i		= 0;
+		
+		  // Loop through and pick a random hex value.  Then add it to the string.
+		  while(i<6) { 
+			  c = Math.round(Math.random()*13);
+			  c = c.toString(16);
+			  color += c;
+		  	i++;
+	  	}
+		
+		  return color;
+	  }
+	
   </script>
 
 </head>
