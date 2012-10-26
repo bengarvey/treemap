@@ -22,12 +22,37 @@
   
       // get the context
       var context = dc.getContext('2d');
+      
+      // loop through the branches and draw each rectangle
+      var x = 0;
+      var y = 0;
+      var maxy = 0;
 
-      // color of the rectangle
-      context.fillStyle = '#993355';
+      for(var i in this.branches) {
 
-      // draw the rectangle
-      context.fillRect(0,0,300,100);
+        var b = this.branches[i];
+ 
+        // color of the rectangle
+        context.fillStyle = b.color;
+
+        // draw the rectangle
+        context.fillRect(x, y, b.height(), b.width());
+       
+        // increment the x
+        x = x + b.width();
+
+        if (b.height() > maxy) {
+          maxy = b.height();
+        }
+        
+        // Too wide for the canvas yet?
+        if (x > dc.width) {
+          x     = 0;
+          y     = maxy;
+          maxy  = 0;
+        }
+ 
+      }
     }
 
   }
@@ -46,11 +71,16 @@
     // Collection of child nodes
     this.children = new Array();
 
-    // Current x and y values in the current view
-    this.x        = 0;
-    this.y        = 0;
-  }
+    // Current length and width values.  Simple version first (this will make them all squares)
+    this.width = function() { 
+      return Math.round( Math.sqrt(this.value) );
+    }
 
+    this.height = function() { 
+      return Math.round( Math.sqrt(this.value) );
+    }
+    
+  }
 	
 	// drawTreeMap	Draws a Treemap on an HTML5 canvas
 	//

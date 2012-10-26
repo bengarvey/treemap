@@ -19,8 +19,12 @@
       var d = document.getElementById("debug");
 
       // Test data arrays
-      var values = new Array(100,2000,300,400,350,75,200,300);
-   
+      var values = new Array();
+  
+      for(var i=0; i<20; i++) {
+        values[i] = Math.floor(Math.random()*10000);
+      }
+ 
       // Generate random and labels for each test data entry
       var colors  = new Array();
       var labels  = new Array();
@@ -74,7 +78,7 @@
 
   <h1>Treemap Test</h1>
   <div id="debug">Debug data<br></div>
-  <div><canvas width="500" height="500" id="tm"></canvas></div>
+  <div><canvas width="1000" height="2000" id="tm"></canvas></div>
 </body>
 
 </html>
