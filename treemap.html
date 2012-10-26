@@ -11,6 +11,7 @@
     function init() {
       
       var tm = new Treemap;
+      tm.canvasname = 'tm';
 
       // Branch array
       var branches = new Array();
@@ -37,6 +38,9 @@
       for(var b in branches) {    
         d.innerHTML += branches[b].label + " " + branches[b].value + " " + branches[b].color + "<br>\n";
       }
+
+      tm.branches = branches;
+      tm.draw();
   
     } 
 
@@ -70,6 +74,7 @@
 
   <h1>Treemap Test</h1>
   <div id="debug">Debug data<br></div>
+  <div><canvas width="500" height="500" id="tm"></canvas></div>
 </body>
 
 </html>

@@ -11,7 +11,24 @@
   // Treemap class
   function Treemap () {
       
+    this.branches   = new Array();      
+    this.canvasname = "";    
+
+    // Draw the treemap
+    this.draw = function() {
       
+      // grab our drawing canvas
+      var dc = document.getElementById(this.canvasname);
+  
+      // get the context
+      var context = dc.getContext('2d');
+
+      // color of the rectangle
+      context.fillStyle = '#993355';
+
+      // draw the rectangle
+      context.fillRect(0,0,300,100);
+    }
 
   }
 
