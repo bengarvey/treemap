@@ -14,17 +14,21 @@
       tm.canvasname = 'tm';
 
       // Branch array
-      var branches = new Array();
+      var boxes = new Array();
 
       var d = document.getElementById("debug");
 
       // Test data arrays
       var values = new Array();
   
-      for(var i=0; i<20; i++) {
-        values[i] = Math.floor(Math.random()*10000);
+      for(var i=0; i<10; i++) {
+        values[i] = Math.floor(Math.random()*100000) + 10;
       }
- 
+
+      for(var i=10; i<100; i++) {
+        values[i] = Math.floor(Math.random()*10000) + 10;
+      }
+  
       // Generate random and labels for each test data entry
       var colors  = new Array();
       var labels  = new Array();
@@ -33,17 +37,17 @@
         colors.push(randomColor());
         labels[v] = "name" + v;
 
-        branches[v]       = new Branch;
-        branches[v].color = colors[v];
-        branches[v].label = labels[v];
-        branches[v].value = values[v];
+        boxes[v]       = new Box;
+        boxes[v].color = colors[v];
+        boxes[v].label = labels[v];
+        boxes[v].value = values[v];
       }
   
-      for(var b in branches) {    
-        d.innerHTML += branches[b].label + " " + branches[b].value + " " + branches[b].color + "<br>\n";
+      for(var b in boxes) {    
+        d.innerHTML += boxes[b].label + " " + boxes[b].value + " " + boxes[b].color + "<br>\n";
       }
 
-      tm.branches = branches;
+      tm.boxes = boxes;
       tm.draw();
   
     } 
@@ -77,8 +81,8 @@
 <body onload="javascript:init();">
 
   <h1>Treemap Test</h1>
+  <div><canvas width="800" height="2000" id="tm"></canvas></div>
   <div id="debug">Debug data<br></div>
-  <div><canvas width="1000" height="2000" id="tm"></canvas></div>
 </body>
 
 </html>

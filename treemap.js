@@ -1,25 +1,30 @@
+
+
 // treemap.js
 // by Ben Garvey
 // http://www.bengarvey.com
 // Twitter:  @bengarvey
 // ben@bengarvey.com
 //
-// Hosted at https://github.com/bengarvey/treemap
-// License:  https://github.com/bengarvey/mit-license.txt
+// Hosted at https://github.com/bengarvey/a
+// License:  https://github.com/bengarvey/a
 
 
   // Treemap class
   function Treemap () {
       
-    this.branches   = new Array();      
+    this.boxes   = new Array();      
     this.canvasname = "";    
 
     // Draw the treemap
     this.draw = function() {
       
       // grab our drawing canvas
-      var dc = document.getElementById(this.canvasname);
-  
+      //var dc = document.getElementById(this.canvasname);
+
+      // draw the treemap, now using our class object
+      drawTreeMap(this);
+/*
       // get the context
       var context = dc.getContext('2d');
       
@@ -53,12 +58,12 @@
         }
  
       }
+    */
     }
-
   }
 
   // Each data group on the treemap is assigned a branch.  Branches are also collections of sub branches
-  function Branch() {
+  function Box() {
 
     // data for how the branch looks
     this.value = 0;
@@ -88,10 +93,12 @@
 	// canvas_name		id of the canvas tag
 	// data				array of values to be mapped
 	// colors			array of colors to use that corresponds with values in data
-	function drawTreeMap(canvas_name, data, colors, labels) {
-	
+	function drawTreeMap(treemap) {
+
+    var canvasname  = treemap.canvasname;
+
 		// Get the canvas element we need
-		if (drawingCanvas = document.getElementById(canvas_name) ) {
+		if (drawingCanvas = document.getElementById(canvasname) ) {
 									
 			// Check the element is in the DOM and the browser supports canvas
 			if(drawingCanvas && drawingCanvas.getContext) {
@@ -204,9 +211,9 @@
 				context = drawingCanvas.getContext('2d');
 				drawingCanvas.resizing = false;
 	
-				boxes = new Array();
+			//	boxes = new Array();
 				var colorcount = 0;
-			
+			  /*
 				// First create the box objects
 				for(d in data) {
 				
@@ -236,19 +243,20 @@
 					colorcount++;
 					
 				}
-				
+				*/
+
 				// We need to save the array of boxes and retrieve it later, so use the canvas
-				drawingCanvas.boxArray = new Array();
+				//drawingCanvas.boxArray = new Array();
 				
 				// This seems wrong, but I had issues setting the array as a whole.  It worked fine setting each element individually
-				for(d in boxes) {
-					drawingCanvas.boxArray[d] = boxes[d];
-				}
+				//for(d in boxes) {
+				//	drawingCanvas.boxArray[d] = boxes[d];
+				//}
 				
-				// Sort them largest to smallest, so the treemap gets drawn nicely
-				boxes.sort( 
+				//Sort them largest to smallest, so the treemap gets drawn nicely
+				treemap.boxes.sort( 
 					function(a, b) { 
-						return b.size - a.size;
+						return b.value - a.value;
 					}
 				);
 		
@@ -257,10 +265,10 @@
 				var width 		= drawingCanvas.width;
 				
 				// Render the boxes.  renderBox is a recursive function that calls itself to draw all the boxes
-				renderBox(canvas_name, context, boxes, 0, 0, 28, width, height);		
+				renderBox(canvasname, context, treemap.boxes, 0, 0, 1, width, height);		
 			}
 		}
-		
+		  
 	}
 	
 	// renderBox 		Renders a treemap and recursively calls itself to fill in the rest of the map
@@ -274,6 +282,8 @@
 	//
 	// Returns:			array of objects still to be rendered
 	function renderBox(canvas_name, context, boxes, x, y, scale, width, height) {
+
+    //document.getElementById('debug').innerHTML += x + ", " + y + " " + width + " " + height + " " + boxes.length + "<br>";  
 	
 		// If we pass in an empty array, we're done.
 		if (boxes.length > 0) {
@@ -283,7 +293,7 @@
 			var skipped = false;
 
 			// Width and height of the box. We try to draw a square, but might adjust it depending on how much room we have
-			var w   	= (Math.sqrt(box.size) / scale);
+			var w   	= (Math.sqrt(box.value) / scale);
 			var h 		= w;
 			var temp 	= 0;
 			
@@ -318,7 +328,9 @@
 				}
 
 			}
-			
+		
+      //document.getElementById("debug").innerHTML += "WH:  " + w + ", " + h + "<br>";
+	
 			// if our height and width ratios are too crazy, skip drawing this box here even though it technically fits
 			if (w/h > 20 || h/w > 10) {
 				skipped = true;
@@ -344,7 +356,7 @@
 				}
 				
 				// Draw a rounded box
-				roundRect(context, x, y, w, h-2, 7, true, true);
+				roundRect(context, Math.round(x),Math.round(y), Math.round(w), Math.round(h), 7, true, true);
 				
 				// Save the coordinates in the box object
 				box.x = x;
@@ -396,3 +408,47 @@
 		
 		return boxes;
 	}
+
+
+/*
+ * Attribution:  Juan Mendesi
+ * http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html 
+ * Draws a rounded rectangle using the current state of the canvas. 
+ * If you omit the last three params, it will draw a rectangle 
+ * outline with a 5 pixel border radius 
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} x The top left x coordinate
+ * @param {Number} y The top left y coordinate 
+ * @param {Number} width The width of the rectangle 
+ * @param {Number} height The height of the rectangle
+ * @param {Number} radius The corner radius. Defaults to 5;
+ * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
+ * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
+ */
+function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+  if (typeof stroke == "undefined" ) {
+    stroke = true;
+  }
+  if (typeof radius === "undefined") {
+    radius = 5;
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  if (stroke) {
+    ctx.stroke();
+  }
+  if (fill) {
+    ctx.fill();
+  }        
+}
+
+
